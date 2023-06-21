@@ -1,7 +1,7 @@
 import { galleryItems } from "./gallery-items.js";
 // Change code below this line
+
 const galleryGrid = document.querySelector(".gallery");
-// console.log(galleryItems); //replace!
 
 importMarkupInGallery(generateMarkup(galleryItems));
 
@@ -40,8 +40,8 @@ function handleClickOnImgPreview(evt) {
 }
 
 /**
- * in array of objects finding a corresponding object by image preview
- * @param {string} previewImage - preview image
+ * in array of objects finding a corresponding object by image preview URL
+ * @param {string} previewImage - preview image URL
  * @param {array} galleryArr - array of objects
  * @returns {object}
  */
@@ -53,17 +53,34 @@ function findImageObj(previewImage, galleryArr = {}) {
  * generates and opens basic modal window with image
  * requires "basicLightbox" library
  * receives object
+ * handles ESC key closing
  * @param {object.key: string} original - image URL
  * @param {object.key: string} description - description of the image
  */
 function openModalWithImageObj({ original, description }) {
-  const modal = basicLightbox.create(`
+  const modal = basicLightbox.create(
+    `
 	<img
             class="modal-image"
             src="${original}"
             alt="${description}"
             width="800" height="600"
           />
-`);
+`,
+    {
+      onShow: () => {
+        window.addEventListener("keydown", closeModalByEscHandler);
+      },
+      onClose: () => {
+        window.removeEventListener("keydown", closeModalByEscHandler);
+      },
+    }
+  );
   modal.show();
+
+  function closeModalByEscHandler(evt) {
+    if (evt.code === "Escape") {
+      modal.close();
+    }
+  }
 }
