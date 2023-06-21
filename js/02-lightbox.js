@@ -5,8 +5,6 @@ const galleryGrid = document.querySelector(".gallery");
 
 importMarkupInGallery(generateMarkup(galleryItems));
 
-// galleryGrid.addEventListener("click", handleClickOnImgPreview);
-
 function generateMarkup(galleryObj) {
   return galleryObj
     .map(
@@ -23,3 +21,9 @@ function generateMarkup(galleryObj) {
 function importMarkupInGallery(markup) {
   galleryGrid.innerHTML = markup;
 }
+
+const lightbox = new SimpleLightbox(".gallery a", {
+  captionsData: "alt",
+  captionDelay: 250,
+  overlayOpacity: 0.85,
+});
